@@ -24,4 +24,5 @@ func update_tower_preview(new_position: Vector2, color : String):
 		drag_tower.modulate = Color(color)
 
 func cleanup_preview():
-	remove_child(get_node("TowerPreview"))
+	if get_node_or_null("TowerPreview"):
+		remove_child(get_node("TowerPreview"))
