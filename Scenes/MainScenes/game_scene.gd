@@ -9,12 +9,17 @@ var build_type = null
 var color_build_valid = "adff4545"
 var color_build_invalid = "ab54ff3c"
 
+const turrets_res_path = "res://Scenes/Turrets/"
+
 
 func _ready():
 	
-	map_node = get_node("Map1")
+	load_map()
 	build_buttons_connect()
 	
+
+func load_map():
+	map_node = get_node("Map1")
 
 # Connect listeners to buttons.
 func build_buttons_connect():
@@ -24,16 +29,23 @@ func build_buttons_connect():
 		i.pressed.connect(initiate_build_mode.bind(i.get_name()))
 
 
-
-
 func _process(_delta):
 	
 	if build_mode:
 		update_tower_preview()
 	
+
+# User input was not consumed by the UI
+# E.g. we are NOT clicking the Start Game.
+func _unhandled_input(event):
 	
-func _unhandled_input(_event):
-	pass
+	if build_mode:
+		if event.is_action_pressed("ui_cancel"):
+			cancel_build_mode()
+		if event.is_action_pressed("ui_accept"):
+			# First verify then cancel because cancel is going to clear
+			#	all the variables for verification
+			verify_and_build()
 	
 	
 func initiate_build_mode(tower_type : String):
@@ -73,14 +85,25 @@ func update_tower_preview():
 
 
 func cancel_build_mode():
-	# cleanup the preview
-	
+	# cleanup the preview	
 	build_mode = false
 	build_valid = false
 	build_location = null
 	build_type = null
 	
 	get_node("UI").cleanup_preview()
-	
+
+
 func verify_and_build():
-	pass
+	
+	if build_valid:
+		var new_tower = load(turrets_res_path + build_type.to_lower() + ".tscn")
+		if new_tower:
+			var tower : Node2D = new_tower.instantiate()
+			tower.position = build_location
+			map_node.get_node("Turrets").add_child(tower, true)
+			cancel_build_mode()
+		else:
+			print("No valid Tower resource found")
+	else:
+		print("Can't build here")

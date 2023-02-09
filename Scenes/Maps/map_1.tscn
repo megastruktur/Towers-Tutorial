@@ -1,13 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://mylj3xcc0te6"]
+[gd_scene load_steps=14 format=3 uid="uid://mylj3xcc0te6"]
 
 [ext_resource type="Texture2D" uid="uid://bsnrk5u6jh7sh" path="res://Assets/Environment/Tilesets/terrainTiles_default.png" id="1_qt8qf"]
 [ext_resource type="Texture2D" uid="uid://bagfuyb1ieu4j" path="res://Assets/Environment/Props/treeBrown_large.png" id="2_obvjr"]
 [ext_resource type="Texture2D" uid="uid://duu23gew0uxyk" path="res://Assets/Environment/Props/treeGreen_large.png" id="3_5bbga"]
 [ext_resource type="Texture2D" uid="uid://dic0q8qpiehmo" path="res://Assets/Environment/Props/crateMetal.png" id="4_qfhyp"]
 [ext_resource type="Texture2D" uid="uid://c2c870adsp4tn" path="res://Assets/Environment/Props/crateWood.png" id="5_pw48n"]
-[ext_resource type="PackedScene" uid="uid://c6nuqm21sbucm" path="res://Scenes/Turrets/gun_t_1.tscn" id="6_qdn4p"]
-[ext_resource type="PackedScene" uid="uid://cf2f1octmmsd" path="res://Scenes/Turrets/gun_t_2.tscn" id="7_yd1cc"]
-[ext_resource type="PackedScene" uid="uid://d0e3nof146mxw" path="res://Scenes/Turrets/missle_t_1.tscn" id="8_2q8qk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3iub6"]
 texture = ExtResource("1_qt8qf")
@@ -181,12 +178,3 @@ layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(327689, 4, 0, 262146, 4, 0, 655373, 4, 0, 589828, 3, 0, 196623, 3, 0, 12, 3, 0)
 
 [node name="Turrets" type="Node2D" parent="."]
-
-[node name="GunT1" parent="Turrets" instance=ExtResource("6_qdn4p")]
-position = Vector2(598, 489)
-
-[node name="GunT2" parent="Turrets" instance=ExtResource("7_yd1cc")]
-position = Vector2(679, 148)
-
-[node name="MissleT1" parent="Turrets" instance=ExtResource("8_2q8qk")]
-position = Vector2(355, 424)
