@@ -1,6 +1,7 @@
 extends Node2D
 
 var map_node : Node2D
+var TowerExclusion : TileMap = null
 
 var build_mode = false
 var build_valid = false
@@ -12,6 +13,7 @@ var color_build_invalid = "ab54ff3c"
 const turrets_res_path = "res://Scenes/Turrets/"
 
 
+
 func _ready():
 	
 	load_map()
@@ -20,6 +22,7 @@ func _ready():
 
 func load_map():
 	map_node = get_node("Map1")
+	TowerExclusion = map_node.get_node("TowerExclusion")
 
 # Connect listeners to buttons.
 func build_buttons_connect():
@@ -60,10 +63,21 @@ func initiate_build_mode(tower_type : String):
 	
 func update_tower_preview():
 	var mouse_position : Vector2 = get_global_mouse_position()
-	var TowerExclusion : TileMap = map_node.get_node("TowerExclusion")
 	var current_tile : Vector2 = TowerExclusion.local_to_map(mouse_position)
 	var tile_position : Vector2 = TowerExclusion.map_to_local(current_tile)
 	
+	var color : String
+	if is_build_place_valid(current_tile, tile_position):
+		color = color_build_valid
+		build_location = tile_position
+	else:
+		color = color_build_invalid
+		
+	get_node("UI").update_tower_preview(tile_position, color)
+
+
+func is_build_place_valid(current_tile: Vector2, tile_position: Vector2) -> bool:
+		
 	# Searching for a valid build place
 	for i in TowerExclusion.get_layers_count():
 		
@@ -74,14 +88,14 @@ func update_tower_preview():
 			build_valid = false
 			break
 	
-	var color : String
-	if build_valid:
-		color = color_build_valid
-		build_location = tile_position
-	else:
-		color = color_build_invalid
-		
-	get_node("UI").update_tower_preview(tile_position, color)
+	# Check towers
+	var turrets = map_node.get_node("Turrets").get_children()
+	for i in turrets:
+		if i.position == tile_position:
+			build_valid = false
+			break
+	
+	return build_valid
 
 
 func cancel_build_mode():
