@@ -1,2 +1,1 @@
-extends "res://Scenes/Turrets/turret.gd"
-
+extends "res://Scenes/Turrets/gun_t_1.gd"

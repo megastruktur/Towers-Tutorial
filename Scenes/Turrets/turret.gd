@@ -2,7 +2,6 @@ extends Node2D
 
 @onready var turret : Sprite2D = $Turret
 
-
 # On every physics Frame
 func _physics_process(_delta):
 	turn()
