@@ -26,11 +26,8 @@ func set_tower_preview(build_type : String, mouse_position):
 		var range_texture : Sprite2D = Sprite2D.new()
 		range_texture.position = Vector2.ZERO
 				
-		var range_texture_scaling: float = drag_tower.tower_range / 600.0
+		var range_texture_scaling: float = GameData.tower_data[build_type.to_lower()]["range"] / 600.0
 		range_texture.scale = Vector2(range_texture_scaling, range_texture_scaling)
-		
-		print("Tower Range: " + str(drag_tower.tower_range))
-		print("Tower Range Scale: " + str(Vector2(range_texture_scaling, range_texture_scaling)))
 		
 		range_texture.texture = load("res://Assets/UI/range_overlay.png")
 		range_texture.modulate = Color(color_build_invalid)
