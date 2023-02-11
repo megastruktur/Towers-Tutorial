@@ -2,6 +2,7 @@ extends Node2D
 
 var map_node : Node2D
 var TowerExclusion : TileMap = null
+var EnemyPath : Path2D = null
 
 var build_mode = false
 var build_valid = false
@@ -10,27 +11,50 @@ var build_type = null
 var color_build_valid = "adff4545"
 var color_build_invalid = "ab54ff3c"
 
-const turrets_res_path = "res://Scenes/Turrets/"
+const turrets_res_path : String = "res://Scenes/Turrets/"
+const enemies_res_path : String = "res://Scenes/Enemies/"
 
+var start_wave_timer : float = 0.2
+var current_wave : int = 0
+var enemies_in_wave : int = 0
 
 
 func _ready():
 	
 	load_map()
+	
 	build_buttons_connect()
+	current_wave = 0
+	start_next_wave()
 	
 
 func load_map():
 	map_node = get_node("Map1")
+	EnemyPath = map_node.get_node("Path")
 	TowerExclusion = map_node.get_node("TowerExclusion")
 
-# Connect listeners to buttons.
-func build_buttons_connect():
-	
-	# Get all build buttons
-	for i in get_tree().get_nodes_in_group("build_buttons"):
-		i.pressed.connect(initiate_build_mode.bind(i.get_name()))
 
+##
+## Spawn Functions
+##
+func start_next_wave():
+	await get_tree().create_timer(start_wave_timer).timeout
+	spawn_enemies(get_wave_data())
+	
+	
+func spawn_enemies(wave_data):
+	for i in wave_data:
+		var new_enemy = load(enemies_res_path + i[0] + ".tscn").instantiate()
+		EnemyPath.add_child(new_enemy, true)
+		await get_tree().create_timer(i[1]).timeout
+	
+	
+func get_wave_data():
+	var wave_data = [["blue_tank", 0.7], ["blue_tank", 0.1]]
+	current_wave += 1
+	enemies_in_wave = wave_data.size()
+	return wave_data
+	
 
 func _process(_delta):
 	
@@ -50,7 +74,18 @@ func _unhandled_input(event):
 			#	all the variables for verification
 			verify_and_build()
 	
+
+##
+##	Build Functions
+##
+# Connect listeners to buttons.
+func build_buttons_connect():
 	
+	# Get all build buttons
+	for i in get_tree().get_nodes_in_group("build_buttons"):
+		i.pressed.connect(initiate_build_mode.bind(i.get_name()))
+
+
 func initiate_build_mode(tower_type : String):
 	
 	# cancel the prev build mode first
@@ -121,3 +156,4 @@ func verify_and_build():
 			print("No valid Tower resource found")
 	else:
 		print("Can't build here")
+

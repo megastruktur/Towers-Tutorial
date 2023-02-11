@@ -17,3 +17,9 @@ var tower_data = {
 		"range" : 250,
 	},
 }
+
+var enemies_data = {
+	"blue_tank" : {
+		"speed" : 200,
+	},
+}
