@@ -73,3 +73,20 @@ func cleanup_preview():
 	if current_tower_preview:
 		current_tower_preview.queue_free()
 		current_tower_preview = null
+
+
+func _on_pause_play_pressed():
+	get_parent().game_pause()
+
+
+# @todo Think about is it a good way to speed up the whole Engine
+#	Maybe the better way is to adjust Speed and Attack Speed?
+func _on_speed_up_pressed():
+	var speed_up_button : TextureButton = get_node("HUD/MarginContainer/GameControls/SpeedUp")
+	
+	if speed_up_button.is_pressed():
+		speed_up_button.modulate = Color(color_build_valid)
+	else:
+		speed_up_button.modulate = Color(1, 1, 1)
+	
+	get_parent().game_speed_toggle()

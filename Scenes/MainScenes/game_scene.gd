@@ -14,9 +14,13 @@ var color_build_invalid = "ab54ff3c"
 const turrets_res_path : String = "res://Scenes/Turrets/"
 const enemies_res_path : String = "res://Scenes/Enemies/"
 
+# Game settings
 var start_wave_timer : float = 0.2
+var prepare_stage_timer : float = 5.0
 var current_wave : int = 0
 var enemies_in_wave : int = 0
+var speed_default : float = 1.0
+var speed_speed_up : float = 2.0
 
 
 func _ready():
@@ -38,7 +42,12 @@ func load_map():
 ## Spawn Functions
 ##
 func start_next_wave():
-	await get_tree().create_timer(start_wave_timer).timeout
+	
+	var timer = start_wave_timer
+	if current_wave == 0:
+		timer = prepare_stage_timer
+	
+	await get_tree().create_timer(timer).timeout
 	spawn_enemies(get_wave_data())
 	
 	
@@ -74,6 +83,25 @@ func _unhandled_input(event):
 			#	all the variables for verification
 			verify_and_build()
 	
+
+##
+## General Game functions
+##
+func game_pause():
+	
+	if get_tree().is_paused():
+		get_tree().paused = false
+	else:
+		get_tree().paused = true
+
+
+func game_speed_toggle():
+	
+	if Engine.get_time_scale() == speed_speed_up:
+		Engine.set_time_scale(speed_default)
+	else:
+		Engine.set_time_scale(speed_speed_up)
+
 
 ##
 ##	Build Functions
