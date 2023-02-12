@@ -16,7 +16,7 @@ const enemies_res_path : String = "res://Scenes/Enemies/"
 
 # Game settings
 var start_wave_timer : float = 0.2
-var prepare_stage_timer : float = 5.0
+var prepare_stage_timer : float = 0.2
 var current_wave : int = 0
 var enemies_in_wave : int = 0
 var speed_default : float = 1.0
@@ -177,6 +177,7 @@ func verify_and_build():
 		var new_tower = load(turrets_res_path + build_type.to_lower() + ".tscn")
 		if new_tower:
 			var tower : Node2D = new_tower.instantiate()
+			tower.built = true
 			tower.position = build_location
 			map_node.get_node("Turrets").add_child(tower, true)
 			cancel_build_mode()

@@ -14,7 +14,7 @@ var tower_data = {
 	"missle_t_1" : {
 		"damage" : 100,
 		"rof" : 3,
-		"range" : 250,
+		"range" : 550,
 	},
 }
 
