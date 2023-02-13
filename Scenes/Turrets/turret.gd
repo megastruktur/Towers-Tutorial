@@ -7,6 +7,7 @@ var shoot_radius : float
 var tracking_enemy : PathFollow2D = null
 var type : String
 var ready_to_fire : bool = true
+var category : String
 
 func _ready():
 	
@@ -19,7 +20,11 @@ func _ready():
 func _physics_process(_delta):
 	if enemy_array.size() != 0 and built:
 		select_enemy()
-		turn()
+		
+		# Wait for animation to end until turning
+		if not get_node("AnimationPlayer").is_playing():
+			turn()
+					
 		if ready_to_fire:
 			fire()
 	else:
@@ -44,10 +49,25 @@ func select_enemy():
 
 func fire():
 	ready_to_fire = false
+	
+	# Play different animations for different shot types
+	match category:
+		"missile":
+			fire_missile()
+		"projectile":
+			fire_projectile()
+	
 	tracking_enemy.on_hit(GameData.tower_data[type]["damage"])
-	print(get_name() + " says BOOM!")
 	await get_tree().create_timer(GameData.tower_data[type]["rof"]).timeout
 	ready_to_fire = true
+
+
+func fire_projectile():
+	get_node("AnimationPlayer").play("fire")
+	
+
+func fire_missile():
+	pass
 
 
 func turn():
@@ -58,7 +78,6 @@ func turn():
 func _on_range_body_entered(body):
 	# Add enemy to enemies array
 	enemy_array.append(body.get_parent())
-	print(enemy_array)
 
 
 func _on_range_body_exited(body):

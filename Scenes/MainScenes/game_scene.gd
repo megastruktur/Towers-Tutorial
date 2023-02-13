@@ -180,6 +180,7 @@ func verify_and_build():
 			tower.built = true
 			tower.position = build_location
 			tower.type = build_type.to_lower()
+			tower.category = GameData.tower_data[build_type.to_lower()]["category"]
 			map_node.get_node("Turrets").add_child(tower, true)
 			cancel_build_mode()
 		else:

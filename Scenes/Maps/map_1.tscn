@@ -183,7 +183,7 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(327689, 4, 0, 262146, 4, 0, 655373, 4, 0, 589828, 3, 0, 196623, 3, 0, 12, 3, 0)
 
-[node name="Turrets" type="Node2D" parent="."]
-
 [node name="Path" type="Path2D" parent="."]
 curve = SubResource("Curve2D_st2pm")
+
+[node name="Turrets" type="Node2D" parent="."]
