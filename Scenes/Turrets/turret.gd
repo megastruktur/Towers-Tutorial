@@ -6,6 +6,7 @@ var built : bool = false
 var shoot_radius : float
 var tracking_enemy : PathFollow2D = null
 var type : String
+var ready_to_fire : bool = true
 
 func _ready():
 	
@@ -19,6 +20,8 @@ func _physics_process(_delta):
 	if enemy_array.size() != 0 and built:
 		select_enemy()
 		turn()
+		if ready_to_fire:
+			fire()
 	else:
 		tracking_enemy = null
 
@@ -37,6 +40,14 @@ func select_enemy():
 	var max_offset = enemy_progress_array.max()
 	var enemy_index = enemy_progress_array.find(max_offset)
 	tracking_enemy = enemy_array[enemy_index]
+
+
+func fire():
+	ready_to_fire = false
+	tracking_enemy.on_hit(GameData.tower_data[type]["damage"])
+	print(get_name() + " says BOOM!")
+	await get_tree().create_timer(GameData.tower_data[type]["rof"]).timeout
+	ready_to_fire = true
 
 
 func turn():

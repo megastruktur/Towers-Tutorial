@@ -1,7 +1,5 @@
-extends PathFollow2D
+extends "res://Scenes/Enemies/enemy.gd"
 
-func _physics_process(delta):
-	move(delta)
-	
-func move(delta):
-	set_progress(get_progress() + GameData.enemies_data["blue_tank"]["speed"] * delta)
+
+func _ready():
+	set_type("blue_tank")

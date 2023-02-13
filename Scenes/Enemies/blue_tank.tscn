@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oibet"]
 size = Vector2(46, 42)
 
-[node name="BlueTank" type="PathFollow2D"]
+[node name="blue_tank" type="PathFollow2D"]
 loop = false
 script = ExtResource("1_1ts81")
 
