@@ -162,7 +162,7 @@ func is_build_place_valid(current_tile: Vector2, tile_position: Vector2) -> bool
 
 
 func cancel_build_mode():
-	# cleanup the preview	
+	# cleanup the preview
 	build_mode = false
 	build_valid = false
 	build_location = null
@@ -179,6 +179,7 @@ func verify_and_build():
 			var tower : Node2D = new_tower.instantiate()
 			tower.built = true
 			tower.position = build_location
+			tower.type = build_type.to_lower()
 			map_node.get_node("Turrets").add_child(tower, true)
 			cancel_build_mode()
 		else:

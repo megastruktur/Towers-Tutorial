@@ -5,11 +5,12 @@ var enemy_array : Array[PathFollow2D] = []
 var built : bool = false
 var shoot_radius : float
 var tracking_enemy : PathFollow2D = null
+var type : String
 
 func _ready():
 	
 	if built:
-		shoot_radius = 0.5 * GameData.tower_data[get_name()]["range"]
+		shoot_radius = 0.5 * GameData.tower_data[type]["range"]
 		get_node("Range/CollisionShape2D").get_shape().radius = shoot_radius
 
 
