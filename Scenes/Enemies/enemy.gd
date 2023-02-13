@@ -23,8 +23,8 @@ func _physics_process(delta):
 	move(delta)
 
 
-func _set(name, value):
-	match name:
+func _set(var_name, value):
+	match var_name:
 		"enemy_type":
 			enemy_type = value
 
