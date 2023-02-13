@@ -2,4 +2,5 @@ extends "res://Scenes/Enemies/enemy.gd"
 
 
 func _ready():
-	set_type("blue_tank")
+	_set("enemy_type", "blue_tank")
+	super._ready()

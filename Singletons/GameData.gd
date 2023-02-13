@@ -21,6 +21,6 @@ var tower_data = {
 var enemies_data = {
 	"blue_tank" : {
 		"speed" : 200,
-		"hp" : 100,
+		"hp" : 300,
 	},
 }
