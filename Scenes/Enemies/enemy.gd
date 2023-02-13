@@ -9,14 +9,13 @@ var enemy_type : String :
 	set(value):
 		enemy_type = value
 
+
 func _ready():
 	hp = GameData.enemies_data[enemy_type]["hp"]
 	
 	HealthBar.max_value = hp
 	HealthBar.value = hp
 	HealthBar.top_level = true
-	
-	print(get_name() + " current Health: " + str(hp))
 
 
 func _physics_process(delta):
@@ -36,7 +35,6 @@ func move(delta):
 
 func on_hit(damage):
 	
-	print(get_name() + " was hit for damage " + str(damage))
 	hp -= damage
 	HealthBar.value = hp
 	
