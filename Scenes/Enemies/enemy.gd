@@ -3,6 +3,10 @@ extends PathFollow2D
 @onready var HealthBar : TextureProgressBar = $HealthBar
 @onready var ImpactArea : Marker2D = $Impact
 
+signal enemy_dead
+signal base_damage(damage)
+var damage : int
+
 # Preload to save some processing power
 var projectile_impact = preload("res://Scenes/Support/projectile_impact.tscn")
 
@@ -16,6 +20,7 @@ var enemy_type : String :
 
 func _ready():
 	hp = GameData.enemies_data[enemy_type]["hp"]
+	damage = GameData.enemies_data[enemy_type]["damage"]
 	
 	HealthBar.max_value = hp
 	HealthBar.value = hp
@@ -23,6 +28,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	deal_damage()
 	move(delta)
 
 
@@ -37,11 +43,20 @@ func move(delta):
 	HealthBar.position = position - Vector2(30, 30)
 
 
-func on_hit(damage):
+func deal_damage():
+	# If the tank reaches the end of line - deal damage and destroy the object.
+	if progress_ratio == 1.0:
+		emit_signal("base_damage", damage)
+		emit_signal("enemy_dead")
+		queue_free()
+		
+
+
+func on_hit(received_damage):
 	
 	impact()
 	
-	hp -= damage
+	hp -= received_damage
 	HealthBar.value = hp
 	
 	if hp <= 0:
@@ -63,5 +78,6 @@ func impact():
 		
 func on_destroy():
 	get_node("CharacterBody2D").queue_free()
+	emit_signal("enemy_dead")
 	await get_tree().create_timer(0.2).timeout
 	queue_free()

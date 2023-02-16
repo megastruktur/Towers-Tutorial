@@ -22,7 +22,8 @@ func _physics_process(_delta):
 		select_enemy()
 		
 		# Wait for animation to end until turning
-		if not get_node("AnimationPlayer").is_playing():
+		var animation_player = get_node_or_null("AnimationPlayer")
+		if (animation_player and not animation_player.is_playing()) or not animation_player:
 			turn()
 					
 		if ready_to_fire:

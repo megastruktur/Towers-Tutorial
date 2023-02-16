@@ -25,5 +25,12 @@ var enemies_data = {
 	"blue_tank" : {
 		"speed" : 200,
 		"hp" : 300,
+		"damage" : 21
 	},
+}
+
+
+var wave_data = {
+	"1" : [["blue_tank", 0.7], ["blue_tank", 0.1]],
+	"2" : [["blue_tank", 0.7], ["blue_tank", 0.3], ["blue_tank", 0.3]],
 }

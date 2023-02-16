@@ -6,6 +6,8 @@ const turrets_res_path = "res://Scenes/Turrets/"
 var color_build_valid = "adff4545"
 var color_build_invalid = "ab54ff3c"
 
+@onready var hp_bar : TextureProgressBar = get_node("HUD/InfoBar/H/HP")
+
 func set_tower_preview(build_type : String, mouse_position):
 		
 	var turret_resource = load(turrets_res_path + build_type.to_lower() + ".tscn")
@@ -90,3 +92,15 @@ func _on_speed_up_pressed():
 		speed_up_button.modulate = Color(1, 1, 1)
 	
 	get_parent().game_speed_toggle()
+
+
+func update_health_bar(current_base_health):
+	var tween : Tween = create_tween()
+	tween.tween_property(hp_bar, "value", current_base_health, 2.0)
+	
+	if current_base_health >= 60:
+		hp_bar.tint_progress = "00ff00"
+	elif current_base_health <= 60 and current_base_health >= 25:
+		hp_bar.tint_progress = "e1be32"
+	else:
+		hp_bar.tint_progress = "e11e1e"

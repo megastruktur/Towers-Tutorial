@@ -1,5 +1,7 @@
 extends Node2D
 
+signal game_finished(result)
+
 var map_node : Node2D
 var TowerExclusion : TileMap = null
 var EnemyPath : Path2D = null
@@ -19,8 +21,11 @@ var start_wave_timer : float = 0.2
 var prepare_stage_timer : float = 0.2
 var current_wave : int = 0
 var enemies_in_wave : int = 0
+var enemies_left_in_wave : int
 var speed_default : float = 1.0
-var speed_speed_up : float = 2.0
+var speed_speed_up : float = 4.0
+
+var base_health = 100
 
 
 func _ready():
@@ -47,22 +52,33 @@ func start_next_wave():
 	if current_wave == 0:
 		timer = prepare_stage_timer
 	
-	await get_tree().create_timer(timer).timeout
-	spawn_enemies(get_wave_data())
+	current_wave += 1
+	
+	if get_wave_data():
+		await get_tree().create_timer(timer).timeout
+		spawn_enemies(get_wave_data())
+	else:
+		emit_signal("game_finished", true)
+		print("Game Over")
 	
 	
 func spawn_enemies(wave_data):
 	for i in wave_data:
 		var new_enemy = load(enemies_res_path + i[0] + ".tscn").instantiate()
+		new_enemy.connect("base_damage", _on_base_damage)
+		new_enemy.connect("enemy_dead", _on_enemy_death)
 		EnemyPath.add_child(new_enemy, true)
 		await get_tree().create_timer(i[1]).timeout
 	
 	
 func get_wave_data():
-	var wave_data = [["blue_tank", 0.7], ["blue_tank", 0.1]]
-	current_wave += 1
-	enemies_in_wave = wave_data.size()
-	return wave_data
+	if str(current_wave) in GameData.wave_data:
+		var wave_data = GameData.wave_data[str(current_wave)]
+		enemies_in_wave = wave_data.size()
+		enemies_left_in_wave = enemies_in_wave
+		return wave_data
+	else:
+		return null
 	
 
 func _process(_delta):
@@ -188,3 +204,19 @@ func verify_and_build():
 	else:
 		print("Can't build here")
 
+
+func _on_base_damage(damage):
+	base_health -= damage
+	
+	get_node("UI").update_health_bar(base_health)
+	if base_health <= 0:
+		emit_signal("game_finished", false)
+		print(base_health)
+		print("Base was destroyed")
+
+
+func _on_enemy_death():
+	enemies_left_in_wave -= 1
+	
+	if enemies_left_in_wave <= 0:
+		start_next_wave()

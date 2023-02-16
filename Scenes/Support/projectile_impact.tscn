@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dry60j58golmp" path="res://Assets/Effects/explosion5.png" id="5_xrbev"]
 [ext_resource type="Script" path="res://Scenes/Support/projectile_impact.gd" id="6_4mg5d"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_5ur8q"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_avuda"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -32,7 +32,7 @@ animations = [{
 
 [node name="ProjectileImpact" type="AnimatedSprite2D"]
 scale = Vector2(0.2, 0.2)
-sprite_frames = SubResource("SpriteFrames_5ur8q")
+sprite_frames = SubResource("SpriteFrames_avuda")
 animation = &"impact"
 speed_scale = 4.0
 script = ExtResource("6_4mg5d")
